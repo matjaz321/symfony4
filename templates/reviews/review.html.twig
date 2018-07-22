@@ -1,16 +1,12 @@
+<h6 class="border-bottom border-gray pb-2 mb-0">Rating: {{ review.rating }}</h6>
 <div class="media text-muted pt-3">
-    <img data-src="holder.js/32x32?text=MZ&bg=e83e8c&fg=fff&size=8"
+    <img data-src="holder.js/32x32?text={{ review.id }}&bg=e83e8c&fg=fff&size=8"
          alt="" class="mr-2 rounded" src="">
-    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-    {#<h6 class="border-bottom border-gray pb-2 mb-0">Rating: {{ review.rating }}</h6>#}
-    <br>
-    <span class="d-block">
 
-        <small>Review ID: {{ review.id }}</small>
-                {#<a href="{{ path('home', {'username': post.user.username}) }}">#}
-                {#<strong class="text-gray-dark">{{ review.rating }}</strong>#}
-                {#</a>#}
-                <small>{{ created_at|date('d/m/Y') }}</small>
-        {{ review.description }}
-    </span>
+    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <span class="d-block">
+            {{ review.description }}
+        </span>
+    </p>
 </div>
+<h6 class="border-bottom border-gray pb-2 mb-0">{{ created_at|date('d/m/Y') }}</h6>

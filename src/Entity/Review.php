@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  */
 class Review {
+
   /**
    * @ORM\Id()
    * @ORM\GeneratedValue()
@@ -36,6 +37,12 @@ class Review {
    * @Assert\NotBlank()
    */
   private $created_at;
+
+  /**
+   * @ORM\ManyToOne(targetEntity="App\Entity\Hotel", inversedBy="reviews")
+   * @ORM\JoinColumn(name="hotel_id", referencedColumnName="id")
+   **/
+  private $hotel;
 
   /**
    * @return mixed
@@ -84,5 +91,19 @@ class Review {
    */
   public function setCreatedAtOnPersist(): void {
     $this->created_at = new \DateTime();
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getHotel() {
+    return $this->hotel;
+  }
+
+  /**
+   * @param mixed $hotel
+   */
+  public function setHotel($hotel): void {
+    $this->hotel = $hotel;
   }
 }

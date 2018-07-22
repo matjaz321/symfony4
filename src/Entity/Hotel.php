@@ -40,6 +40,11 @@ class Hotel {
   private $created_at;
 
   /**
+   * @ORM\OneToMany(targetEntity="App\Entity\Review", mappedBy="hotel")
+   */
+  private $reviews;
+
+  /**
    * @return mixed
    */
   public function getId() {
@@ -86,5 +91,19 @@ class Hotel {
    */
   public function setCreatedAtOnPersist(): void {
     $this->created_at = new \DateTime();
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getReviews() {
+    return $this->reviews;
+  }
+
+  /**
+   * @param mixed $reviews
+   */
+  public function setReviews($reviews): void {
+    $this->reviews = $reviews;
   }
 }

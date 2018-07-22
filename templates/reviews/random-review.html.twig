@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ include('reviews/review.html.twig', {'review': review, 'created_at': created_at}) }}
+    {{ include('reviews/review.html.twig', {'review': review, 'created_at': created_at, 'rating': rating}) }}
 {% endblock %}

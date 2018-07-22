@@ -32,10 +32,23 @@ class ReviewController extends AbstractController {
     $randomReview = $reviews[$randomKey];
     $createdAt = $randomReview->getCreatedAt();
 
+    $rating = [
+      1 => FALSE,
+      2 => FALSE,
+      3 => FALSE,
+      4 => FALSE,
+      5 => FALSE,
+    ];
+
+    for ($i = 1; $i < $randomReview->getRating(); $i++) {
+      $rating[$i] = TRUE;
+    }
+
     // Display this review.
     return $this->render('reviews/random-review.html.twig', [
       'review' => $randomReview,
       'created_at' => $createdAt,
+      'rating' => $rating,
     ]);
   }
 }

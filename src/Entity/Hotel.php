@@ -82,13 +82,6 @@ class Hotel {
   }
 
   /**
-   * @param $created_at
-   */
-  public function setCreatedAt($created_at): void {
-    $this->created_at = $created_at;
-  }
-
-  /**
    * @ORM\PrePersist()
    */
   public function setCreatedAtOnPersist(): void {

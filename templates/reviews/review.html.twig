@@ -1,6 +1,6 @@
 <h6 class="border-bottom border-gray pb-2 mb-0">
-    {% for rate in rating %}
-        {% if rate %}
+    {% for i in 1..5 %}
+        {% if i <= review.rating %}
             <span class="fa fa-star checked"></span>
         {% else %}
             <span class="fa fa-star"></span>

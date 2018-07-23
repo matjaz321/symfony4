@@ -26,7 +26,7 @@ class ReviewRepository extends ServiceEntityRepository {
    * @return mixed
    */
   public function findRandomReviewForToday(Hotel $hotel) {
-    return $this->createQueryBuilder('r')
+    $reviews = $this->createQueryBuilder('r')
       ->select('r')
       ->andWhere('r.hotel = :id')
       ->andWhere("r.created_at > :date")
@@ -35,6 +35,11 @@ class ReviewRepository extends ServiceEntityRepository {
       ->orderBy('r.created_at', 'DESC')
       ->getQuery()
       ->getResult();
+
+    // Get random review from array of revies.
+    $randomKey = array_rand($reviews);
+    /* @var \App\Entity\Review $randomReview*/
+    return $reviews[$randomKey];
   }
 
   //    /**

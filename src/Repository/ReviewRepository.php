@@ -36,6 +36,11 @@ class ReviewRepository extends ServiceEntityRepository {
       ->getQuery()
       ->getResult();
 
+    // If there is no reviews return empty array.
+    if (empty($reviews)) {
+      return [];
+    }
+
     // Get random review from array of revies.
     $randomKey = array_rand($reviews);
     /* @var \App\Entity\Review $randomReview*/

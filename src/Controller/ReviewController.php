@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Hotel;
+use App\Repository\HotelRepository;
 use App\Repository\ReviewRepository;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -16,24 +14,41 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ReviewController extends AbstractController {
 
+  /**
+   * @var \App\Repository\ReviewRepository
+   */
   private $reviewRepository;
 
-  public function __construct(ReviewRepository $reviewRepository) {
+  /**
+   * @var \App\Repository\HotelRepository
+   */
+  private $hotelRepository;
+
+  /**
+   * ReviewController constructor.
+   *
+   * @param \App\Repository\ReviewRepository $reviewRepository
+   * @param \App\Repository\HotelRepository  $hotelRepository
+   */
+  public function __construct(ReviewRepository $reviewRepository, HotelRepository $hotelRepository) {
     $this->reviewRepository = $reviewRepository;
+    $this->hotelRepository = $hotelRepository;
   }
 
   /**
    * @Route("/{hotelId}/today/review", name="review_random")
    */
-  public function showRandomReview(Hotel $hotelId) {
-    // Get all reviews for today's date and filter hotel.
-    $randomReview = $this->reviewRepository->findRandomReviewForToday($hotelId);
-    $createdAt = $randomReview->getCreatedAt();
+  public function showRandomReview($hotelId) {
+    // Check if hotel with this ID exists in the database.
+    if (!($hotel = $this->hotelRepository->find($hotelId))) {
+      throw $this->createNotFoundException("The hotel $hotelId was not found.");
+    }
 
+    // Get all reviews for today's date and filter hotel.
+    $randomReview = $this->reviewRepository->findRandomReviewForToday($hotel);
     // Display this review.
     return $this->render('reviews/random-review.html.twig', [
       'review' => $randomReview,
-      'created_at' => $createdAt,
     ]);
   }
 }

@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ include('reviews/review.html.twig', {'review': review, 'created_at': created_at}) }}
+    {% if review %}
+        {{ include('reviews/review.html.twig', {'review': review}) }}
+    {% else %}
+        <div class="media text-muted pt-3">
+            <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <span class="d-block">
+                    No review for today found!
+                </span>
+            </p>
+        </div>
+    {% endif %}
 {% endblock %}

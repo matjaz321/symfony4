@@ -74,12 +74,13 @@ class CacheServiceTest extends KernelTestCase {
 
     $cacheInterface->expects($this->once())
       ->method('has')
-      ->with('random_review_' . $hotel->getId(), $review, 300)
+      ->with('random_review_' . $hotel->getId())
       ->willReturn(TRUE);
 
     $cacheInterface->expects($this->once())
       ->method('get')
-      ->with('random_review_' . $hotel->getId());
+      ->with('random_review_' . $hotel->getId())
+      ->willReturn($review);
 
     $cacheService = new CacheService($reviewRepository, $cacheInterface);
     $this->assertEquals($review, $cacheService->getRandomReview($hotel));

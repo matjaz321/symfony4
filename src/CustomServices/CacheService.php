@@ -4,7 +4,7 @@ namespace App\CustomServices;
 
 use App\Entity\Hotel;
 use App\Repository\ReviewRepository;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Class CacheService
@@ -19,12 +19,19 @@ class CacheService {
   private $reviewRepository;
 
   /**
+   * @var \Psr\SimpleCache\CacheInterface
+   */
+  private $filesystemCache;
+
+  /**
    * CacheService constructor.
    *
    * @param \App\Repository\ReviewRepository $reviewRepository
+   * @param \Psr\SimpleCache\CacheInterface  $filesystemCache
    */
-  public function __construct(ReviewRepository $reviewRepository) {
+  public function __construct(ReviewRepository $reviewRepository, CacheInterface $filesystemCache) {
     $this->reviewRepository = $reviewRepository;
+    $this->filesystemCache = $filesystemCache;
   }
 
   /**
@@ -36,16 +43,15 @@ class CacheService {
    */
   public function getRandomReview(Hotel $hotel) {
     // Load cache and set hotel key.
-    $cache = new FilesystemCache();
     $hotelKey = 'random_review_' . $hotel->getId();
     // If cache doesn't exist or cache is invalid get new review.
-    if (!$cache->has($hotelKey)) {
+    if (!$this->filesystemCache->has($hotelKey)) {
       $randomReview = $this->reviewRepository->findRandomReviewForToday($hotel);
-      $cache->set($hotelKey, $randomReview, 300);
+      $this->filesystemCache->set($hotelKey, $randomReview, 300);
     }
     else {
       // Get cached review.
-      $randomReview = $cache->get($hotelKey);
+      $randomReview = $this->filesystemCache->get($hotelKey);
     }
 
     // Return random review.

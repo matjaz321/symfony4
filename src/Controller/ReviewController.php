@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\CustomServices\CacheService;
 use App\Repository\HotelRepository;
 use App\Repository\ReviewRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Twig\Cache\FilesystemCache;
 
 /**
  * Class ReviewController
@@ -25,14 +27,25 @@ class ReviewController extends AbstractController {
   private $hotelRepository;
 
   /**
+   * @var \App\CustomServices\CacheService
+   */
+  private $cacheService;
+
+  /**
    * ReviewController constructor.
    *
    * @param \App\Repository\ReviewRepository $reviewRepository
    * @param \App\Repository\HotelRepository  $hotelRepository
+   * @param \App\CustomServices\CacheService $cacheService
    */
-  public function __construct(ReviewRepository $reviewRepository, HotelRepository $hotelRepository) {
+  public function __construct(
+    ReviewRepository $reviewRepository,
+    HotelRepository $hotelRepository,
+    CacheService $cacheService
+  ) {
     $this->reviewRepository = $reviewRepository;
     $this->hotelRepository = $hotelRepository;
+    $this->cacheService = $cacheService;
   }
 
   /**
@@ -44,8 +57,8 @@ class ReviewController extends AbstractController {
       throw $this->createNotFoundException("The hotel $hotelId was not found.");
     }
 
-    // Get all reviews for today's date and filter hotel.
-    $randomReview = $this->reviewRepository->findRandomReviewForToday($hotel);
+    // Get cached review.
+    $randomReview = $this->cacheService->getRandomReview($hotel);
     // Display this review.
     return $this->render('reviews/random-review.html.twig', [
       'review' => $randomReview,

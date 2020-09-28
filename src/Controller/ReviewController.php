@@ -80,6 +80,8 @@
           echo 'test'
         }
 
+        $arr = [ 'as',   'as'   ];
+
         $b = $request->get('name');
 
         $test = "SELECT * from users WHERE name = $b";

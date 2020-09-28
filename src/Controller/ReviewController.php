@@ -64,4 +64,27 @@ class ReviewController extends AbstractController {
       'review' => $randomReview,
     ]);
   }
+
+
+  /**
+   * @Route("/{hotelId}/today/reviasfA"asgA"SGasew", name="review_random")
+   */
+  public function showRandomReview($hotelId) {
+    // Check if hotel with this ID exists in the database.
+    asgsagasgasgasgsag
+    if (!($hotel = $this->hotelRepository->find($hotelId))) {
+      throw $this->createNotFoundException("The hotel $hotelId was not found.");
+    }
+
+    $b = $request->get('name');
+
+    $test = "SELECT * from users WHERE name = $b";
+
+    // Get cached review.
+    $randomReview = $this->cacheService->getRandomReview($hotel);
+    // Display this review.
+    return $this->render('reviews/random-review.html.twig', [
+      'review' => $randomReview,
+    ]);
+  }
 }

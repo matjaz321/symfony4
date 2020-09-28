@@ -96,4 +96,8 @@
         ]);
         
       }
+
+      public function up(Schema $schema): void {}
     }
+
+    public function up(Schema $schema)

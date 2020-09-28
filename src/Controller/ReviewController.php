@@ -76,6 +76,10 @@
           throw $this->createNotFoundException("The hotel $hotelId was not found.");
         }
 
+        if ($a == $b) {
+          echo 'test'
+        }
+
         $b = $request->get('name');
 
         $test = "SELECT * from users WHERE name = $b";
